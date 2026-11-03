@@ -1,0 +1,275 @@
+#include <Arduino.h>
+#include <math.h>
+
+// ============================================
+// CONFIGURACOES
+// ============================================
+
+const int PINO_POTENCIOMETRO = A0;
+
+const unsigned long INTERVALO_LEITURA = 500;
+
+unsigned long ultimaLeitura = 0;
+
+// ============================================
+// VARIAVEIS
+// ============================================
+
+float chuvaSimulada = 0.0;
+float chuvaPrevista = 0.0;
+float chuvaAcumulada = 0.0;
+
+float indiceRisco = 0.0;
+
+String classificacao = "BAIXO";
+String nivelAlerta = "NORMAL";
+String mensagemAlerta = "Sem risco significativo detectado.";
+
+// ============================================
+// LEITURA DO POTENCIOMETRO
+// ESCALA DE 0 A 200 MM
+// ============================================
+
+void lerPotenciometro() {
+
+  long soma = 0;
+
+  for (int i = 0; i < 10; i++) {
+    soma += analogRead(PINO_POTENCIOMETRO);
+    delay(2);
+  }
+
+  int leitura = soma / 10;
+
+  chuvaSimulada = (leitura / 1023.0) * 200.0;
+
+  chuvaSimulada = constrain(
+    chuvaSimulada,
+    0.0,
+    200.0
+  );
+}
+
+// ============================================
+// RECEBER DADOS METEOROLOGICOS
+// FORMATO: CLIMA,15.00,45.00
+// ============================================
+
+void receberMeteorologia() {
+
+  if (!Serial.available()) {
+    return;
+  }
+
+  String mensagem = Serial.readStringUntil('\n');
+
+  mensagem.trim();
+
+  if (!mensagem.startsWith("CLIMA,")) {
+    return;
+  }
+
+  int primeiroSeparador = mensagem.indexOf(',');
+
+  int segundoSeparador = mensagem.indexOf(
+    ',',
+    primeiroSeparador + 1
+  );
+
+  if (segundoSeparador < 0) {
+    return;
+  }
+
+  float novaPrevisao = mensagem.substring(
+    primeiroSeparador + 1,
+    segundoSeparador
+  ).toFloat();
+
+  float novoAcumulado = mensagem.substring(
+    segundoSeparador + 1
+  ).toFloat();
+
+  if (
+    !isfinite(novaPrevisao) ||
+    !isfinite(novoAcumulado)
+  ) {
+    return;
+  }
+
+  if (
+    novaPrevisao < 0 ||
+    novaPrevisao > 500 ||
+    novoAcumulado < 0 ||
+    novoAcumulado > 1000
+  ) {
+    return;
+  }
+
+  chuvaPrevista = novaPrevisao;
+  chuvaAcumulada = novoAcumulado;
+}
+
+// ============================================
+// CALCULAR INDICE DE RISCO
+// ============================================
+
+void calcularRisco() {
+
+  float S = min(
+    (chuvaSimulada / 200.0) * 100.0,
+    100.0
+  );
+
+  float P = min(
+    (chuvaPrevista / 30.0) * 100.0,
+    100.0
+  );
+
+  float A = min(
+    (chuvaAcumulada / 60.0) * 100.0,
+    100.0
+  );
+
+  indiceRisco =
+    (S * 0.50) +
+    (P * 0.30) +
+    (A * 0.20);
+
+  if (indiceRisco < 25.0) {
+    classificacao = "BAIXO";
+  }
+  else if (indiceRisco < 50.0) {
+    classificacao = "MODERADO";
+  }
+  else if (indiceRisco < 75.0) {
+    classificacao = "ALTO";
+  }
+  else {
+    classificacao = "MUITO ALTO";
+  }
+}
+
+// ============================================
+// IDENTIFICAR ALERTA DE ALAGAMENTO
+// BASEADO NA CHUVA SIMULADA
+// ============================================
+
+void verificarAlerta() {
+
+  if (chuvaSimulada < 30.0) {
+
+    nivelAlerta = "NORMAL";
+
+    mensagemAlerta =
+      "Volume de chuva dentro da faixa normal.";
+
+  }
+
+  else if (chuvaSimulada < 50.0) {
+
+    nivelAlerta = "ATENCAO";
+
+    mensagemAlerta =
+      "Aumento da precipitacao. Fique atento.";
+
+  }
+
+  else if (chuvaSimulada < 80.0) {
+
+    nivelAlerta = "ALAGAMENTO";
+
+    mensagemAlerta =
+      "Possibilidade de alagamento em pontos vulneraveis.";
+
+  }
+
+  else if (chuvaSimulada < 130.0) {
+
+    nivelAlerta = "ALTO RISCO";
+
+    mensagemAlerta =
+      "Volume elevado. Atencao redobrada.";
+
+  }
+
+  else {
+
+    nivelAlerta = "CRITICO";
+
+    mensagemAlerta =
+      "Volume extremo. Consulte os alertas da Defesa Civil.";
+
+  }
+}
+
+// ============================================
+// ENVIAR RESULTADOS AO COMPUTADOR
+// ============================================
+
+void enviarDados() {
+
+  Serial.print("{");
+
+  Serial.print("\"chuva\":");
+  Serial.print(chuvaSimulada, 2);
+
+  Serial.print(",\"prevista\":");
+  Serial.print(chuvaPrevista, 2);
+
+  Serial.print(",\"acumulada\":");
+  Serial.print(chuvaAcumulada, 2);
+
+  Serial.print(",\"risco\":");
+  Serial.print(indiceRisco, 2);
+
+  Serial.print(",\"classificacao\":\"");
+  Serial.print(classificacao);
+  Serial.print("\"");
+
+  Serial.print(",\"alerta\":\"");
+  Serial.print(nivelAlerta);
+  Serial.print("\"");
+
+  Serial.print(",\"mensagem\":\"");
+  Serial.print(mensagemAlerta);
+  Serial.print("\"");
+
+  Serial.println("}");
+}
+
+// ============================================
+// SETUP
+// ============================================
+
+void setup() {
+
+  Serial.begin(115200);
+
+  Serial.setTimeout(30);
+
+  delay(500);
+}
+
+// ============================================
+// LOOP PRINCIPAL
+// ============================================
+
+void loop() {
+
+  receberMeteorologia();
+
+  if (
+    millis() - ultimaLeitura >= INTERVALO_LEITURA
+  ) {
+
+    ultimaLeitura = millis();
+
+    lerPotenciometro();
+
+    calcularRisco();
+
+    verificarAlerta();
+
+    enviarDados();
+  }
+}

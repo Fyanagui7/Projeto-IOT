@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Monitoramento de Alagamentos | Indaiatuba</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="cabecalho">
+
+    <div class="cabecalho-conteudo">
+
+        <div>
+
+            <span class="identificacao">
+                SISTEMA DE MONITORAMENTO URBANO
+            </span>
+
+            <h1>Monitoramento de Alagamentos</h1>
+
+            <p>Indaiatuba - São Paulo</p>
+
+        </div>
+
+        <div>
+
+            <span id="statusSistema" class="status offline">
+                ESP8266 DESCONECTADO
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+    <!-- CONEXAO USB -->
+
+    <section class="painel conexao">
+
+        <div>
+
+            <h2>Conexão com ESP8266</h2>
+
+            <p>
+                Comunicação serial através do cabo USB.
+            </p>
+
+            <span id="statusConexao">
+                Aguardando conexão com a placa.
+            </span>
+
+        </div>
+
+        <button id="btnConectar">
+            Conectar ESP8266
+        </button>
+
+    </section>
+
+
+    <!-- LOCALIZACAO -->
+
+    <section class="localizacao">
+
+        <div>
+
+            <span class="texto-pequeno">
+                LOCAL MONITORADO
+            </span>
+
+            <h2>Indaiatuba - SP</h2>
+
+            <p>
+                Latitude: -23.0884 |
+                Longitude: -47.2119
+            </p>
+
+        </div>
+
+        <div class="icone-chuva">
+            ☁️
+        </div>
+
+    </section>
+
+
+    <!-- INDICADORES -->
+
+    <section class="indicadores">
+
+        <div class="card">
+
+            <span>CHUVA SIMULADA</span>
+
+            <h2 id="chuva">-- mm</h2>
+
+            <p>Leitura do potenciômetro</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <span>PREVISÃO DE CHUVA</span>
+
+            <h2 id="previsao">-- mm</h2>
+
+            <p>Próximas 3 horas</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <span>CHUVA ACUMULADA</span>
+
+            <h2 id="acumulada">-- mm</h2>
+
+            <p>Últimas 72 horas</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- INDICE DE RISCO -->
+
+    <section class="painel painel-risco">
+
+        <div class="titulo-secao">
+
+            <span class="texto-pequeno">
+                PROCESSAMENTO REALIZADO PELO ESP8266
+            </span>
+
+            <h2>Índice de risco de alagamento</h2>
+
+        </div>
+
+
+        <div class="resultado-risco">
+
+            <h1 id="risco">--%</h1>
+
+            <span id="classificacao" class="classificacao">
+                AGUARDANDO DADOS
+            </span>
+
+        </div>
+
+
+        <div class="barra-fundo">
+
+            <div id="barraRisco"></div>
+
+        </div>
+
+
+        <div class="escala">
+
+            <span>BAIXO</span>
+
+            <span>MODERADO</span>
+
+            <span>ALTO</span>
+
+            <span>MUITO ALTO</span>
+
+        </div>
+
+
+        <p id="mensagemRisco">
+            Conecte o ESP8266 para iniciar o monitoramento.
+        </p>
+
+    </section>
+
+
+    <!-- ALERTA DE ALAGAMENTO -->
+
+    <section class="painel painel-alerta">
+
+        <span class="texto-pequeno">
+            SISTEMA AUTOMÁTICO DE ALERTAS
+        </span>
+
+        <h2>Alerta de alagamento</h2>
+
+        <div id="indicadorAlerta" class="alerta-normal">
+
+            <div id="iconeAlerta">✓</div>
+
+            <h1 id="nivelAlerta">NORMAL</h1>
+
+            <p id="mensagemAlerta">
+                Aguardando dados do ESP8266.
+            </p>
+
+        </div>
+
+        <p class="aviso-alerta">
+            Classificação experimental baseada na chuva simulada.
+        </p>
+
+    </section>
+
+
+    <!-- PARAMETROS -->
+
+    <section class="painel">
+
+        <h2>Parâmetros de cálculo</h2>
+
+        <div class="parametros">
+
+            <div>
+
+                <strong>50%</strong>
+
+                <span>Chuva simulada</span>
+
+            </div>
+
+            <div>
+
+                <strong>30%</strong>
+
+                <span>Previsão meteorológica</span>
+
+            </div>
+
+            <div>
+
+                <strong>20%</strong>
+
+                <span>Chuva acumulada</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FAIXAS DE ALERTA -->
+
+    <section class="painel">
+
+        <h2>Faixas de alerta configuradas</h2>
+
+        <div class="tabela-alertas">
+
+            <div>
+                <span class="bolinha verde"></span>
+                <strong>0 a 29,9 mm</strong>
+                <span>Normal</span>
+            </div>
+
+            <div>
+                <span class="bolinha amarelo"></span>
+                <strong>30 a 49,9 mm</strong>
+                <span>Atenção</span>
+            </div>
+
+            <div>
+                <span class="bolinha laranja"></span>
+                <strong>50 a 79,9 mm</strong>
+                <span>Possível alagamento</span>
+            </div>
+
+            <div>
+                <span class="bolinha vermelho"></span>
+                <strong>80 a 129,9 mm</strong>
+                <span>Alto risco</span>
+            </div>
+
+            <div>
+                <span class="bolinha critico"></span>
+                <strong>130 a 200 mm</strong>
+                <span>Crítico</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- INFORMACOES -->
+
+    <section class="painel">
+
+        <h2>Informações do sistema</h2>
+
+        <div class="informacoes">
+
+            <p>
+                <strong>Placa:</strong>
+                ESP8266
+            </p>
+
+            <p>
+                <strong>Comunicação:</strong>
+                USB Serial
+            </p>
+
+            <p>
+                <strong>Fonte meteorológica:</strong>
+                Open-Meteo
+            </p>
+
+            <p>
+                <strong>Última atualização:</strong>
+                <span id="atualizacao">--</span>
+            </p>
+
+            <p>
+                <strong>Estado da meteorologia:</strong>
+                <span id="statusClima">Aguardando consulta</span>
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            Sistema experimental de monitoramento de alagamentos.
+        </p>
+
+        <p>
+            Não substitui os alertas oficiais da Defesa Civil.
+        </p>
+
+    </footer>
+
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

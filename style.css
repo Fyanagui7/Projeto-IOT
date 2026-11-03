@@ -1,0 +1,445 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef2f7;
+    color: #263548;
+}
+
+/* CABECALHO */
+
+.cabecalho {
+    background: #102b46;
+    color: white;
+    padding: 30px 5%;
+}
+
+.cabecalho-conteudo {
+    max-width: 1150px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.identificacao,
+.texto-pequeno {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #5e9bc8;
+    font-weight: bold;
+}
+
+.cabecalho h1 {
+    font-size: 27px;
+    margin: 12px 0;
+}
+
+.cabecalho p {
+    color: #b7c8d9;
+}
+
+/* STATUS */
+
+.status {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.online {
+    color: #176b48;
+    background: #d6f5e4;
+}
+
+.offline {
+    color: #a52f2f;
+    background: #ffe0e0;
+}
+
+/* CONTEUDO */
+
+.container {
+    max-width: 1150px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* PAINEIS */
+
+.painel,
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 15px #00000009;
+}
+
+.painel h2 {
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+/* CONEXAO */
+
+.conexao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.conexao p {
+    color: #78899c;
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.conexao span {
+    font-size: 13px;
+}
+
+button {
+    background: #147ac2;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 22px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #0e609d;
+}
+
+button:disabled {
+    background: #8998a8;
+    cursor: not-allowed;
+}
+
+/* LOCALIZACAO */
+
+.localizacao {
+    background: #173b5d;
+    color: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.localizacao h2 {
+    margin: 10px 0;
+    font-size: 24px;
+}
+
+.localizacao p {
+    color: #c1d4e6;
+    font-size: 13px;
+}
+
+.icone-chuva {
+    font-size: 48px;
+}
+
+/* INDICADORES */
+
+.indicadores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.card span {
+    color: #718399;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.card h2 {
+    color: #147ac2;
+    font-size: 29px;
+    margin: 18px 0 10px;
+}
+
+.card p {
+    color: #8795a5;
+    font-size: 12px;
+}
+
+/* RISCO */
+
+.painel-risco {
+    text-align: center;
+    padding: 35px;
+}
+
+.titulo-secao {
+    text-align: left;
+}
+
+.resultado-risco {
+    margin: 30px 0 20px;
+}
+
+#risco {
+    font-size: 70px;
+    color: #299b65;
+}
+
+.classificacao {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 9px 20px;
+    border-radius: 20px;
+    background: #e4f6ec;
+    color: #299b65;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.barra-fundo {
+    width: 100%;
+    height: 18px;
+    background: #e8edf2;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 25px 0 12px;
+}
+
+#barraRisco {
+    width: 0%;
+    height: 100%;
+    background: #299b65;
+    border-radius: 20px;
+    transition: width 0.5s, background 0.5s;
+}
+
+.escala {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #8795a5;
+    font-weight: bold;
+}
+
+#mensagemRisco {
+    color: #718399;
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+/* ALERTAS */
+
+.painel-alerta {
+    text-align: center;
+}
+
+#indicadorAlerta {
+    padding: 30px 15px;
+    border-radius: 12px;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+#iconeAlerta {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+#nivelAlerta {
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+#mensagemAlerta {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.alerta-normal {
+    background: #e1f5e9;
+    color: #218653;
+}
+
+.alerta-atencao {
+    background: #fff4c9;
+    color: #9b7410;
+}
+
+.alerta-alagamento {
+    background: #ffe3c2;
+    color: #b85b13;
+}
+
+.alerta-alto {
+    background: #ffdddd;
+    color: #c42d2d;
+}
+
+.alerta-critico {
+    background: #8f1717;
+    color: white;
+}
+
+.aviso-alerta {
+    color: #78899c;
+    font-size: 11px;
+    margin-top: 15px;
+}
+
+/* PARAMETROS */
+
+.parametros {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.parametros div {
+    background: #f2f6fa;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.parametros strong {
+    display: block;
+    color: #147ac2;
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+.parametros span {
+    color: #64748b;
+    font-size: 12px;
+}
+
+/* TABELA DE ALERTAS */
+
+.tabela-alertas {
+    margin-top: 20px;
+}
+
+.tabela-alertas div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid #edf0f4;
+    font-size: 13px;
+}
+
+.tabela-alertas strong {
+    min-width: 125px;
+}
+
+.tabela-alertas div > span:last-child {
+    color: #718399;
+}
+
+.bolinha {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.verde {
+    background: #299b65;
+}
+
+.amarelo {
+    background: #e5b82c;
+}
+
+.laranja {
+    background: #e77b2d;
+}
+
+.vermelho {
+    background: #d64545;
+}
+
+.critico {
+    background: #8f1717;
+}
+
+/* INFORMACOES */
+
+.informacoes {
+    margin-top: 20px;
+}
+
+.informacoes p {
+    padding: 12px 0;
+    border-bottom: 1px solid #edf0f4;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.informacoes strong {
+    color: #263548;
+}
+
+/* RODAPE */
+
+footer {
+    text-align: center;
+    color: #8995a3;
+    font-size: 12px;
+    padding: 25px 10px;
+    line-height: 1.8;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 750px) {
+
+    .cabecalho-conteudo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .conexao {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .indicadores {
+        grid-template-columns: 1fr;
+    }
+
+    .parametros {
+        grid-template-columns: 1fr;
+    }
+
+    .localizacao h2 {
+        font-size: 20px;
+    }
+
+    #risco {
+        font-size: 55px;
+    }
+
+    .tabela-alertas div {
+        flex-wrap: wrap;
+    }
+
+}
